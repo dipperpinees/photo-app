@@ -1,0 +1,25 @@
+<div class="item" _id=<%=post._id %>>
+    <div class="item-header">
+        <div class="item-header-avatar">
+            <div>
+                <img src=<%=post.avatar %> alt="avatar">
+            </div>
+             <p> <%=post.name %> </p>
+        </div>
+        <div class="item-more">
+            <i class="bi bi-three-dots"></i>
+            <div class="item-more-dropdown">
+                <button class="item-delete"><i class="bi bi-trash"></i> Xóa</button>
+                <button class="item-update"><i class="bi bi-pencil"></i> Chỉnh sửa</button>
+            </div>
+        </div>
+    </div>
+    <img class="item-image" src=<%=post.image %> alt="image">
+    <div class="item-heart">
+        <i class="bi bi-heart heart"></i>
+        <p> <span class="item-like-number"><%=post.like %></span> lượt thích</p> 
+    </div>
+    <div class="item-caption">
+        <p><strong><%=post.name %></strong> <%=post.caption %></p>
+    </div>
+</div>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<%- include('./header.ejs', {title: "Đăng ảnh mới"}) %>
+
+<body>
+    <div id="main" >
+        <form class="create-form" action="/create" method="POST" encType="multipart/form-data">
+            <div class="create-field create-name">
+                <label>Tên của bạn</label>
+                <input id="name" type="text" name="name" >
+            </div>
+            <div class="create-field create-avatar">
+                <label>Avatar</label>
+                <input id="avatar" type="file" name="avatar">
+            </div>
+            <div class="create-field">
+                <label>Ảnh của bạn</label>
+                <input id="image" type="file" name="image" >
+            </div>
+            <div class="create-field"> 
+                <label>Caption</label>
+                <textarea id="caption" name="caption" rows="3" cols="50" > </textarea>
+            </div>
+            <button class="submit">Đăng</button>
+        </form>
+    </div>
+    <a class="github" href="https://github.com/hiepnguyen223/photo-app">
+        <i class="bi bi-github"></i>
+    </a>
+    <script>
+        if(Cookies.get("name") && Cookies.get("avatar")) {
+            document.querySelector(".create-name").style.display = "none";
+            document.querySelector(".create-avatar").style.display = "none";
+        }
+    </script>
+</body>
+</html>

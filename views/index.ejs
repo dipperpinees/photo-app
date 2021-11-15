@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('./header.ejs', {title: "Photo Web App"}) %>
+<body>
+    <div id="main">
+        <a href="/create" class="create">
+            <i class="bi bi-file-earmark-image"></i>
+            Đăng ảnh
+        </a>
+        <% if(list.length > 0){ %>
+        <%    list.forEach(post => { %>
+               <%- include("./post.ejs", {post: post}) %>
+        <%    }) %>
+        <%} %>
+    </div>
+    <script>
+        const moreButtons = document.querySelectorAll(".bi-three-dots");
+        moreButtons.forEach((moreButton) => {
+            moreButton.onclick = () => {
+            if(moreButton.parentNode.querySelector(".item-more-dropdown").style.display === "flex") {
+                moreButton.parentNode.querySelector(".item-more-dropdown").style.display = "none"
+            } else {
+                moreButton.parentNode.querySelector(".item-more-dropdown").style.display = "flex"
+            }
+        }
+        })
+        //select like button
+        const likeButtons = document.querySelectorAll(".heart");
+        likeButtons.forEach(likeButton => {
+            const _id = likeButton.parentNode.parentNode.getAttribute('_id');
+            if(window.localStorage.getItem(_id)) {
+                likeButton.classList.remove("bi-heart");
+                likeButton.classList.add("bi-heart-fill");
+            } else {
+                likeButton.classList.add("bi-heart");
+                likeButton.classList.remove("bi-heart-fill");
+            }
+            likeButton.onclick = () => {
+                const likeNumber = likeButton.parentNode.parentNode.querySelector(".item-like-number");
+    
+                if(window.localStorage.getItem(_id)) {
+                    window.localStorage.removeItem(_id);
+                    likeNumber.textContent = Number(likeNumber.textContent) - 1;
+                    likeButton.classList.add("bi-heart");
+                    likeButton.classList.remove("bi-heart-fill");
+                    fetch(`/unlike/${_id}`,{
+                        method: "POST",
+                    })
+                    .then(() => {})
+                    .catch(err => console.log(err))
+                } else {
+                    window.localStorage.setItem(_id, 'like');
+                    likeNumber.textContent = Number(likeNumber.textContent) + 1;
+                    likeButton.classList.remove("bi-heart");
+                    likeButton.classList.add("bi-heart-fill");
+                    fetch(`/like/${_id}`,{
+                        method: "POST",
+                    })
+                    .then(() => {})
+                    .catch(err => console.log(err))
+                }
+            }
+        })
+        
+        const deleteButtons = document.querySelectorAll(".item-delete");
+        deleteButtons.forEach((deleteButton) => {   
+            deleteButton.onclick = () => {
+                const currentPost =  deleteButton.parentNode.parentNode.parentNode.parentNode;
+                currentPost.remove();
+                const _id = deleteButton.parentNode.parentNode.parentNode.parentNode.getAttribute("_id");
+                if(localStorage.getItem(_id)) {
+                    localStorage.removeItem(_id);
+                }
+                fetch(`/delete/${_id}`, {
+                    method: "DELETE",
+                })
+                .then(() => {})
+                .catch(err => console.log(err));
+            }
+        })
+    </script>
+    <a class="github" href="https://github.com/hiepnguyen223/photo-app">
+        <i class="bi bi-github"></i>
+    </a>
+    
+</body>
+
+</html>
