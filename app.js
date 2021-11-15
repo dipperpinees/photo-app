@@ -12,6 +12,8 @@ mongoose.connect(dbUrl, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(result => app.listen(process.env.PORT || 3000))
     .catch(err => console.log(err));
 
+app.listen(process.env.PORT || 3000);
+
 //register view engine
 app.set('view engine', 'ejs');
 
