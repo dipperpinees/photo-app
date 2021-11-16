@@ -6,13 +6,12 @@ const app = express();
 const dbUrl = "mongodb+srv://hiepnk223:hiepnk223@cluster0.e1x3r.mongodb.net/hiepnguyen?retryWrites=true&w=majority";
 const fileUpload = require('express-fileupload');
 const cookieParser = require('cookie-parser')
-
+const {TextDecoder, TextEncoder} = require("util");
 
 mongoose.connect(dbUrl, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(result => app.listen(process.env.PORT || 3000))
     .catch(err => console.log(err));
 
-app.listen(process.env.PORT || 3000);
 
 //register view engine
 app.set('view engine', 'ejs');
