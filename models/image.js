@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-
+const {TextDecoder, TextEncoder} = require("util");
 const { Schema } = mongoose;
 
 const imageSchema = new Schema({
