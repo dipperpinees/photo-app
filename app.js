@@ -6,7 +6,6 @@ const app = express();
 const dbUrl = "mongodb+srv://hiepnk223:hiepnk223@cluster0.e1x3r.mongodb.net/hiepnguyen?retryWrites=true&w=majority";
 const cookieParser = require('cookie-parser')
 const multer = require('multer')
-const firebase = require('./firebase')
 const cloudinary = require("cloudinary").v2;
 const { CloudinaryStorage } = require("multer-storage-cloudinary");
 
@@ -90,19 +89,7 @@ app.get("/create", (req, res) => {
     res.render('create')
 })
 
-const writeImage = ({image, name}) => {
-    const uploadPath = __dirname + '/public/images/' + name;
-    image.mv(uploadPath, function(err) {
-        if (err) {
-            console.log(err);
-        }
-    });
-}
-
 app.post("/create", upload, (req, res) => {
-    // if(req.files.avatar)
-    //     console.log(req.files.avatar[0]);
-    console.log(req.files['image'][0].path)
     let newPost;
     if(req.cookies.name && req.cookies.avatar) {
         const imageUrl = req.files.image[0].path;
