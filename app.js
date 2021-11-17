@@ -4,9 +4,17 @@ const mongoose = require('mongoose');
 const Image = require("./models/image.js");
 const app = express();
 const dbUrl = "mongodb+srv://hiepnk223:hiepnk223@cluster0.e1x3r.mongodb.net/hiepnguyen?retryWrites=true&w=majority";
-const fileUpload = require('express-fileupload');
 const cookieParser = require('cookie-parser')
-const {TextDecoder, TextEncoder} = require("util");
+const multer = require('multer')
+const firebase = require('./firebase')
+const cloudinary = require("cloudinary").v2;
+const { CloudinaryStorage } = require("multer-storage-cloudinary");
+
+cloudinary.config({
+    cloud_name: "uethehe",
+    api_key: "351837916728316",
+    api_secret: "23FUPTzHqtBTfbK5ugYBpHq5Q3U",
+});
 
 mongoose.connect(dbUrl, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(result => app.listen(process.env.PORT || 3000))
@@ -18,11 +26,18 @@ app.set('view engine', 'ejs');
 
 //middleware & static files
 app.use(express.static('public'));
-app.use('/uploads', express.static('uploads'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(fileUpload());
+
+const storage = new CloudinaryStorage({
+    cloudinary: cloudinary,
+    params: {
+      folder: "DEV",
+    },
+});
+
 app.use(cookieParser())
+const upload = multer({ storage: storage }).fields([{name: "avatar"}, {name: "image"}]);;
 
 app.get("/", (req, res) => {
     Image.find().sort({ createdAt: -1 })
@@ -84,41 +99,34 @@ const writeImage = ({image, name}) => {
     });
 }
 
-app.post("/create",  (req, res) => {
-    if (!req.files || Object.keys(req.files).length === 0) {
-        return res.status(400).send('No files were uploaded.');
-    }
-
-    const imageName = `${req.body.name}${req.files.image.name}`.replace(/\s/g, '');
-
-    let newImage;
+app.post("/create", upload, (req, res) => {
+    // if(req.files.avatar)
+    //     console.log(req.files.avatar[0]);
+    console.log(req.files['image'][0].path)
+    let newPost;
     if(req.cookies.name && req.cookies.avatar) {
-        newImage = new Image({
+        const imageUrl = req.files.image[0].path;
+        newPost = new Image({
             ...req.body,
             name: req.cookies.name,
             avatar: req.cookies.avatar,
-            image: `/images/${imageName}`,
+            image: imageUrl,
             like: 0,
         })
     } else {
-        const avatarName = `${req.body.name}${req.files.avatar.name}`.replace(/\s/g, '');
-
-        //save name and avatar to cookie
+        const avatarUrl = req.files.avatar[0].path;
+        const imageUrl = req.files.image[0].path;
+        res.cookie("avatar", avatarUrl);
         res.cookie("name", req.body.name);
-        res.cookie("avatar", `/images/${avatarName}`);
-
-        writeImage({image: req.files.avatar, name: avatarName});
-
-        newImage = new Image({
+        newPost = new Image({
             ...req.body,
-            avatar: `/images/${avatarName}`,
-            image: `/images/${imageName}`,
+            avatar: avatarUrl,
+            image: imageUrl,
             like: 0,
         })
     }
-    writeImage({image: req.files.image, name: imageName});
 
-    newImage.save()
+    newPost.save()
         .then(result => {
             res.redirect("/");
         })
