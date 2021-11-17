@@ -1,2 +1,2 @@
-Deployment: https://friendphotoapp.herokuapp.com/
-Express, MongoDB, Cloudinary
+https://friendphotoapp.herokuapp.com/
+
