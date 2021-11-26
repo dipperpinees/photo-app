@@ -3,7 +3,7 @@ const ejs = require('ejs');
 const mongoose = require('mongoose');
 const Image = require("./models/image.js");
 const app = express();
-const dbUrl = "mongodb+srv://hiepnk223:hiepnk223@cluster0.e1x3r.mongodb.net/hiepnguyen?retryWrites=true&w=majority";
+const dbUrl = "";
 const cookieParser = require('cookie-parser')
 const multer = require('multer')
 const cloudinary = require("cloudinary").v2;
