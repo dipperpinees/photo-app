@@ -10,9 +10,9 @@ const cloudinary = require("cloudinary").v2;
 const { CloudinaryStorage } = require("multer-storage-cloudinary");
 
 cloudinary.config({
-    cloud_name: "uethehe",
-    api_key: "351837916728316",
-    api_secret: "23FUPTzHqtBTfbK5ugYBpHq5Q3U",
+    cloud_name: "",
+    api_key: "",
+    api_secret: "",
 });
 
 mongoose.connect(dbUrl, { useNewUrlParser: true, useUnifiedTopology: true })
