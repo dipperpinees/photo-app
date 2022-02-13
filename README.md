@@ -1,4 +1,4 @@
-<a href="https://friendphotoapp.herokuapp.com/">Link to online Demo (Demo Link)</a>
+<a href="https://friendphotoapp.herokuapp.com/">DEMO</a>
 
 ## How to start
 ### `npm start` or `yarn start`
